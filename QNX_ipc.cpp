@@ -90,4 +90,41 @@ int main() {
     return 0;
 }
 
+/*Explanation of the Code
+The Server:
 
+Creates a message channel (ChannelCreate()).
+Waits for messages using MsgReceive().
+Processes the received message.
+Sends a reply back using MsgReply().
+The Client:
+
+Connects to the server using ConnectAttach().
+Sends a message to the server using MsgSend(), which blocks until a response is received.
+Receives the server's response and prints it.
+🔹 Expected Output
+Run the Server First:
+arduino
+Copy
+Edit
+Server running. Waiting for messages...
+Received message: Hello, Server!
+Then Run the Client:
+pgsql
+Copy
+Edit
+Received reply: Hello from the server!
+ Why is Message Passing Preferred in QNX?
+ Synchronous & Deterministic – The client blocks until a response is received, making it predictable.
+ No Shared Memory Required – Unlike shared memory, no additional synchronization mechanisms (mutexes, semaphores) are needed.
+ Security – Since all IPC happens via kernel-managed channels, access control is enforced.
+ Scalability – Used in real-time systems where different processes interact with modular independence.
+
+ Other IPC Mechanisms in QNX
+Besides message passing, QNX supports:
+
+Shared Memory (shm_open()) – Best for high-speed large data transfer.
+Signals (kill(), sigaction()) – Used for process notifications.
+Pipes & FIFOs (pipe(), mkfifo()) – Simple inter-process streaming.
+Sockets (socket()) – For network communication between different machines.
+Would you like an example of another IPC method like shared memory or signals?*/
