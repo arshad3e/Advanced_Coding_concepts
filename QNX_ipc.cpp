@@ -53,3 +53,41 @@ int main() {
     return 0;
 }
 
+//qnx client code
+
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/neutrino.h>
+#include <sys/netmgr.h>
+#include <string.h>
+
+#define SERVER_CHANNEL 1  // Same ID as server
+
+typedef struct {
+    int msg_type;
+    char text[100];
+} Message;
+
+int main() {
+    int server_coid = ConnectAttach(ND_LOCAL_NODE, 0, SERVER_CHANNEL, _NTO_SIDE_CHANNEL, 0);
+    if (server_coid == -1) {
+        perror("ConnectAttach failed");
+        return -1;
+    }
+
+    Message msg;
+    msg.msg_type = 1;
+    strcpy(msg.text, "Hello, Server!");
+
+    Message reply;
+
+    if (MsgSend(server_coid, &msg, sizeof(msg), &reply, sizeof(reply)) == -1) {
+        perror("MsgSend failed");
+        return -1;
+    }
+
+    printf("Received reply: %s\n", reply.text);
+    return 0;
+}
+
+
